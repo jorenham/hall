@@ -1,5 +1,11 @@
 # Overview
 
+{%
+   include-markdown "../README.md"
+   start="<!--badges-start-->"
+   end="<!--badges-end-->"
+%}
+
 `TODO`
 
 # Install
@@ -43,7 +49,14 @@ To verify that `gmpy` is installed, check the backend:
 
 # Examples
 
-`TODO`
+### Intelligence Quotient (IQ) 
+
+{%
+   include-markdown "../README.md"
+   start="<!--example-iq-start-->"
+   end="<!--example-iq-end-->"
+%}
+
 
 # Contributing
 
