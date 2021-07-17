@@ -48,6 +48,9 @@ jobs:
           tagging_message: ${{ env.VERSION }}
           skip_fetch: true
 
+      - name: Publish MkDocs to Github Pages
+        run: poetry run docs
+
 #      - name: Create Github release draft
 #        id: create_release
 #        uses: actions/create-release@v1

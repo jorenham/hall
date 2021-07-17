@@ -38,5 +38,9 @@ def check():
     _poetry_run("mypy")
 
 
+def docs():
+    _poetry_run("mkdocs", "gh-deploy")
+
+
 if __name__ == "__main__":
     check()

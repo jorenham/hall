@@ -64,6 +64,7 @@ mkdocs-include-markdown-plugin = "^3.2.0"
 [tool.poetry.scripts]
 reformat = "scripts.poetry:reformat"
 check = "scripts.poetry:check"
+docs = "scripts.poetry:docs"
 
 
 # pytest
