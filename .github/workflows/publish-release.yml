@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
 
       - name: Install requirements
-        run: poetry install --no-dev
+        run: poetry install
 
       - name: Bump version
         run: |
