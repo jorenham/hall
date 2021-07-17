@@ -32,15 +32,12 @@ def reformat():
     _poetry_run("isort", ".")
 
 
-def check():
+def test():
     _poetry_run("black", "--check", ".")
     _poetry_run("isort", "--check", ".")
     _poetry_run("mypy")
+    _poetry_run("pytest")
 
 
 def docs():
     _poetry_run("mkdocs", "gh-deploy")
-
-
-if __name__ == "__main__":
-    check()
