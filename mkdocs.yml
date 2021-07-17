@@ -1,0 +1,10 @@
+site_name: Hall
+site_description: Probability theory using pythonic and (almost) mathematical notation
+strict: true
+site_url: https://jorenham.github.io/hall
+
+repo_name: jorenham/hall
+repo_url: https://github.com/jorenham/hall
+
+plugins:
+  - include-markdown
