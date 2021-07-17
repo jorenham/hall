@@ -9,6 +9,7 @@ version = "0.1.1"
 description = "Hall - Probability theory using pythonic and (almost) mathematical notation."
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 readme = "README.md"
+license = "BSD-3-Clause"
 classifiers = [
     "Development Status :: 3 - Alpha",
 
@@ -47,6 +48,7 @@ repository = "https://github.com/jorenham/hall"
 [tool.poetry.dependencies]
 python = "^3.8"
 mpmath = "^1.2"
+gmpy2 = {version = "^2.0.8", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
@@ -56,6 +58,13 @@ coverage = {extras = ["toml"], version = "^5.5"}
 mypy = "^0.910"
 black = "^21.6b0"
 isort = "^5.9.2"
+mkdocs = "^1.2.1"
+mkdocs-include-markdown-plugin = "^3.2.0"
+
+[tool.poetry.scripts]
+reformat = "scripts.poetry:reformat"
+check = "scripts.poetry:check"
+
 
 # pytest
 [tool.pytest]
@@ -101,6 +110,7 @@ files = [
 [[tool.mypy.overrides]]
 module = "mpmath"
 ignore_missing_imports = true
+
 
 # Black
 [tool.black]
