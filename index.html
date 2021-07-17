@@ -87,6 +87,15 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="overview">Overview</h1>
+<!-- BEGIN INCLUDE ../README.md &lt;!--badges-start--&gt; &lt;!--badges-end--&gt; -->
+
+<p><a href="https://github.com/jorenham/hall/actions?query=event%3Apush+branch%3Amaster+workflow%3ACI"><img alt="CI" src="https://github.com/jorenham/hall/workflows/CI/badge.svg?event=push" /></a>
+<a href="https://pypi.python.org/pypi/hall"><img alt="pypi" src="https://img.shields.io/pypi/v/hall.svg" /></a>
+<a href="https://pepy.tech/project/hall"><img alt="Downloads" src="https://pepy.tech/badge/hall/month" /></a>
+<a href="https://github.com/jorenham/hall"><img alt="versions" src="https://img.shields.io/pypi/pyversions/hall.svg" /></a>
+<a href="https://github.com/jorenham/hall/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/github/license/jorenham/hall.svg" /></a></p>
+<!-- END INCLUDE -->
+
 <p><code>TODO</code></p>
 <h1 id="install">Install</h1>
 <p>Installation is as simple as:</p>
@@ -112,7 +121,22 @@ libraries. On Ubuntu-based systems, these are installed with:</p>
 'gmpy'
 </code></pre>
 <h1 id="examples">Examples</h1>
-<p><code>TODO</code></p>
+<h3 id="intelligence-quotient-iq">Intelligence Quotient (IQ)</h3>
+<!-- BEGIN INCLUDE ../README.md &lt;!--example-iq-start--&gt; &lt;!--example-iq-end--&gt; -->
+
+<pre><code class="language-pycon">&gt;&gt;&gt; from hall import P, E, Std, Normal
+&gt;&gt;&gt; IQ = ~Normal(100, 15)
+&gt;&gt;&gt; E[IQ]
+100.0
+&gt;&gt;&gt; Std[IQ]
+15.0
+&gt;&gt;&gt; P(X &gt;= 130)
+0.0227501319481792
+</code></pre>
+<p>So the chance of having an IQ (normally distributed with μ=100 and σ=15) of at 
+least 130 is approximately 2.3%.</p>
+<!-- END INCLUDE -->
+
 <h1 id="contributing">Contributing</h1>
 <p>Any contributions to <em>hall</em> are appreciated! </p>
 <h2 id="issues">Issues</h2>
@@ -184,5 +208,5 @@ provide a <strong>reproducable</strong> example of the bug.</p>
 
 <!--
 MkDocs version : 1.2.1
-Build Date UTC : 2021-07-17 21:22:09.324177+00:00
+Build Date UTC : 2021-07-17 23:53:32.414244+00:00
 -->
