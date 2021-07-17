@@ -1,7 +1,7 @@
 import mpmath
 
 from hall import E, P, Var
-from hall.discrete import Bern, B, U
+from hall.discrete import B, Bern, U
 
 
 def test_bernoulli():
