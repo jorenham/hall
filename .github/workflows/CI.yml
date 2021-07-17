@@ -1,7 +1,13 @@
 name: CI
 
 on:
-  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+      - '**'
+  pull_request: {}
+
 
 jobs:
   ci:
@@ -33,7 +39,4 @@ jobs:
         run: poetry install
 
       - name: Run black
-        run: poetry run black hall
-
-      - name: Run mypy
-        run: poetry run mypy
+        run: poetry run check
