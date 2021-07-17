@@ -32,7 +32,7 @@ jobs:
       - name: Bump version
         run: |
           poetry version patch
-          poetry "VERSION=v$(version --short)" >> $GITHUB_ENV
+          "VERSION=v$(poetry version --short)" >> $GITHUB_ENV
 
       - name: Build the source and wheels archives
         run: poetry build
