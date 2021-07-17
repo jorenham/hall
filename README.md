@@ -38,4 +38,4 @@ least 130 is approximately 2.3%.
 
 For guidance on setting up a development environment and how to make a
 contribution to *hall*, see
-[Contributing to Pydantic](https://jorenham.github.io/hall/#contributing).
+[Contributing to hall](https://jorenham.github.io/hall/#contributing).
