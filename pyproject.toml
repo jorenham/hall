@@ -42,6 +42,7 @@ packages = [
 
 [tool.poetry.urls]
 homepage = "https://pypi.org/project/hall/"
+documentation = "https://jorenham.github.io/hall/"
 repository = "https://github.com/jorenham/hall"
 "Bug Tracker" = "https://github.com/jorenham/hall/issues"
 
