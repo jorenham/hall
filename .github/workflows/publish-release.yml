@@ -1,0 +1,61 @@
+name: pre-commit
+
+on:
+  push:
+
+jobs:
+  publish-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Setup Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.7
+
+      - name: Setup vritualenv cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: Install requirements
+        run: poetry install --no-dev
+
+      - name: Bump version
+        run: |
+          poetry version patch
+          poetry "VERSION=v$(version --short)" >> $GITHUB_ENV
+
+      - name: Build the source and wheels archives
+        run: poetry build
+
+      - name: Publish to PyPI
+        run: poetry publish -u __token__ -p ${{ secrets.pypi_password }}
+
+      - name: Push new version
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: pyproject.toml
+          commit_message: "Bump to ${{ env.VERSION }}"
+          tagging_message: ${{ env.VERSION }}
+          skip_fetch: true
+
+#      - name: Create Github release draft
+#        id: create_release
+#        uses: actions/create-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ env.VERSION }}
+#          release_name: ${{ env.VERSION }}
+#          body: TODO
+#          draft: true
+#          prerelease: false
