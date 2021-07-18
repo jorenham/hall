@@ -18,10 +18,8 @@ from typing import (
 
 import mpmath
 
-from hall._types import C
-from hall._types import Float
-from hall._types import Float as Probability
-from hall.event import EventEq, EventInterval
+from hall._types import C, Float, Probability
+from hall.event import Event, EventEq, EventInterval
 
 
 class Stochast(Generic[C]):
@@ -33,29 +31,40 @@ class Stochast(Generic[C]):
     def __init__(self, distribution: Distribution[C]):
         self.distribution = distribution
 
-    def __eq__(self, other) -> EventEq:  # type: ignore
+    def __eq__(self, other: C) -> EventEq[C]:  # type: ignore
         return EventEq(self, other)
 
-    def __ne__(self, other) -> EventEq:  # type: ignore
+    def __ne__(self, other: C) -> EventEq[C]:  # type: ignore
         return EventEq(self, other, _inv=True)
 
-    def __lt__(self, other) -> EventInterval:
+    def __lt__(self, other: C) -> EventInterval[C]:
         if self.distribution.discrete:
             return EventInterval(self, b=other - 1)
         else:
             return EventInterval(self, b=other)  # TODO some tiny amount
 
-    def __le__(self, other) -> EventInterval:
+    def __le__(self, other: C) -> EventInterval[C]:
         return EventInterval(self, b=other)
 
-    def __gt__(self, other) -> EventInterval:
+    def __gt__(self, other: C) -> EventInterval[C]:
         return EventInterval(self, a=other)
 
-    def __ge__(self, other) -> EventInterval:
+    def __ge__(self, other: C) -> EventInterval[C]:
         if self.distribution.discrete:
             return EventInterval(self, a=other + 1)
         else:
             return EventInterval(self, a=other)  # TODO some tiny amount
+
+    def __invert__(self) -> EventEq[C]:
+        return EventEq(self, 0)
+
+    def __or__(self, other: Union[Event[C], Stochast[C]]) -> EventEq[C]:
+        # TODO precedence hacking (don't collapse X | Y to X when uncorr!)
+        #  P(X == x | Y == y) => P(X == (X | Y) == y)
+        #  P(X | Y == y) => P((X | Y) == y)
+        #  P(X == x | Y) => P(X == (x | Y))
+        #  P(X, Y | Z) => P(X, (Y | Z))
+        return NotImplemented
 
     def __contains__(self, item) -> bool:
         return item in self.distribution.support

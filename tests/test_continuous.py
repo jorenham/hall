@@ -1,9 +1,9 @@
 from hall import E, P, Var
-from hall.continuous import N
+from hall.continuous import Normal
 
 
 def test_normal():
-    X = ~N()
+    X = ~Normal()
     assert E[X] == 0
     assert Var[X] == 1
     assert P[X <= 0.0] == 1 / 2

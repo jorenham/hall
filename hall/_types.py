@@ -6,6 +6,7 @@ __all__ = [
     "Real",
     "Complex",
     "Float",
+    "Probability",
     "Z",
     "R",
     "C",
@@ -37,6 +38,7 @@ Integral = Union[bool, int, libmp.MPZ_TYPE]
 Float = Union[float, mpmath.mpf]
 Real = Union[Integral, Float, decimal.Decimal, fractions.Fraction]
 Complex = Union[Real, complex, mpmath.mpc]
+Probability = Float
 
 
 # natural numbers
@@ -54,7 +56,6 @@ R = TypeVar(
     fractions.Fraction,
     mpmath.libmp.MPZ_TYPE,
     int,
-    bool,
 )
 # complex numbers
 C = TypeVar(
@@ -67,7 +68,6 @@ C = TypeVar(
     fractions.Fraction,
     mpmath.libmp.MPZ_TYPE,
     int,
-    bool,
 )
 
 

@@ -1,6 +1,5 @@
 __all__ = [
     "Normal",
-    "N",
 ]
 
 import abc
@@ -10,13 +9,11 @@ from typing import ClassVar, Protocol, cast
 
 import mpmath
 
-from hall._core import Distribution as _Distribution
-from hall._core import Interval
-from hall._types import Float as Probability
-from hall._types import R, Real
+from hall._core import Distribution, Interval
+from hall._types import Probability, R, Real
 
 
-class Distribution(_Distribution[R], Protocol[R]):
+class DistributionC(Distribution[R], Protocol[R]):
     discrete: ClassVar[bool] = False
 
     @abc.abstractmethod
@@ -63,7 +60,7 @@ class Distribution(_Distribution[R], Protocol[R]):
         return self.cdf_inv(y)
 
 
-class Normal(Distribution[mpmath.mpf]):
+class Normal(DistributionC[mpmath.mpf]):
     __slots__ = ("mu", "sigma")
 
     mu: mpmath.mpf
@@ -101,8 +98,3 @@ class Normal(Distribution[mpmath.mpf]):
     def cdf_inv(self, y: Probability) -> R:
         x = statistics._normal_dist_inv_cdf(y, self.mu, self.sigma)  # type: ignore  # noqa
         return cast(R, mpmath.mpf(x))
-
-
-# shortcuts
-
-N = Normal

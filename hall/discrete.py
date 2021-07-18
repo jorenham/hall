@@ -1,10 +1,7 @@
 __all__ = [
     "Bernoulli",
-    "Uniform",
     "Binomial",
-    "Bern",
-    "U",
-    "B",
+    "Uniform",
 ]
 
 import abc
@@ -13,14 +10,11 @@ from typing import ClassVar, Final, Protocol, Union
 
 import mpmath
 
-from hall._core import Distribution as _Distribution
-from hall._core import Interval
-from hall._types import Float
-from hall._types import Float as Probability
-from hall._types import Integral, Z, is_probability
+from hall._core import Distribution, Interval
+from hall._types import Float, Integral, Probability, Z, is_probability
 
 
-class Distribution(_Distribution[Z], Protocol[Z]):
+class DistributionD(Distribution[Z], Protocol[Z]):
     discrete: ClassVar[bool] = True
 
     @abc.abstractmethod
@@ -81,7 +75,7 @@ class Distribution(_Distribution[Z], Protocol[Z]):
         return self.cmf_inv(y)
 
 
-class Binomial(Distribution[Z]):
+class Binomial(DistributionD[Z]):
     __slots__ = ("n", "p")
 
     n: Z
@@ -145,7 +139,7 @@ class Bernoulli(Binomial):
         return 1
 
 
-class Uniform(Distribution[int]):
+class Uniform(DistributionD[int]):
     __slots__ = ("a", "b")
 
     a: Final[int]
@@ -196,10 +190,3 @@ class Uniform(Distribution[int]):
 
     def cmf_inf(self, y: Probability) -> int:
         return int(self.n * y + self.a - 1)
-
-
-# Shortcuts
-
-Bern = Bernoulli
-U = Uniform
-B = Binomial

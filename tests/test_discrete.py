@@ -1,18 +1,18 @@
 import mpmath
 
 from hall import E, P, Var
-from hall.discrete import B, Bern, U
+from hall.discrete import Bernoulli, Binomial, Uniform
 
 
 def test_bernoulli():
-    X = ~Bern(0.4)
+    X = ~Bernoulli(0.4)
     assert E[X] == 0.4
     assert Var[X] == 0.24
     assert P[X == 1] == 1 - P[X == 0] == P[X != 0] == 0.4
 
 
 def test_binomial():
-    X = ~B(4, mpmath.fraction(1, 2))
+    X = ~Binomial(4, mpmath.fraction(1, 2))
 
     assert E[X] == 2
     assert Var[X] == 1
@@ -30,7 +30,7 @@ def test_binomial():
 
 
 def test_uniform():
-    X = ~U(-5, 5)
+    X = ~Uniform(-5, 5)
     assert E[X] == 0
     assert Var[X] == 10
     assert mpmath.almosteq(sum(P[X == x] for x in range(-6, 7)), 1)

@@ -8,20 +8,18 @@ __all__ = [
 ]
 
 import abc
-from typing import TYPE_CHECKING, Final, Optional, Protocol
+from typing import TYPE_CHECKING, Final, Generic, Optional, Protocol
 
 import mpmath
 
-from hall._types import C
-from hall._types import Float as Probability
-from hall._types import is_probability
+from hall._types import C, Probability, is_probability
 
 
 if TYPE_CHECKING:
     from hall._core import Stochast
 
 
-class Event(Protocol[C]):
+class Event(Generic[C]):
     __slots__ = ()
 
     X: Stochast[C]
@@ -36,6 +34,13 @@ class Event(Protocol[C]):
 
     def __int__(self) -> int:
         return int(bool(self))
+
+    def __or__(self, Y: Event[C]) -> Event[C]:
+        """Conditional event"""
+        if isinstance(Y, Event):
+            return self
+
+        return NotImplemented
 
     @property
     @abc.abstractmethod
@@ -73,6 +78,9 @@ class EventEq(Event[C]):
 
     @property
     def p(self) -> Probability:
+        if not self.X.distribution.discrete:
+            return mpmath.mpf(0)  # TODO return the smallest non-zero value
+
         p = self.X.distribution.f(self.x)
         if self._inv:
             return 1.0 - p
@@ -81,7 +89,7 @@ class EventEq(Event[C]):
 
     @property
     def _op_symbol(self) -> str:
-        return "≠" if self._inv else "="
+        return "!=" if self._inv else "="
 
 
 class EventInterval(Event[C]):
