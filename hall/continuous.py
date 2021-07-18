@@ -9,12 +9,13 @@ from typing import ClassVar, Protocol, cast
 
 import mpmath
 
-from hall._core import Distribution, Interval
+from hall import Interval
+from hall._core import Distribution
 from hall.typing import Probability, R, Real
 
 
 class DistributionC(Distribution[R], Protocol[R]):
-    discrete: ClassVar[bool] = False
+    __discrete__: ClassVar[bool] = False
 
     @abc.abstractmethod
     def pdf(self, x: R) -> Probability:
@@ -36,7 +37,7 @@ class DistributionC(Distribution[R], Protocol[R]):
         if not isinstance(x, numbers.Real):
             raise TypeError("value must be an real number")
 
-        if x not in self.support:
+        if x not in self.__support__:
             return mpmath.mpf(0)
 
         return self.pdf(x)
@@ -45,7 +46,7 @@ class DistributionC(Distribution[R], Protocol[R]):
         if not isinstance(x, numbers.Real):
             raise TypeError("value must be an real number")
 
-        support = self.support
+        support = self.__support__
         if x < support:
             return mpmath.mpf(0)
         if x > support:
@@ -77,8 +78,10 @@ class Normal(DistributionC[mpmath.mpf]):
         self.mu = mpmath.mpf(mu)
         self.sigma = mpmath.mpf(sigma)
 
+        super().__init__()
+
     @property
-    def support(self):
+    def __support__(self):
         return Interval(mpmath.mpf("-inf"), mpmath.mpf("+inf"))
 
     @property

@@ -17,7 +17,7 @@ def test_binomial():
     assert E[X] == 2
     assert Var[X] == 1
 
-    assert 0 in X
+    assert 0 in X.outcomes, str(X.distribution.__support__)
     assert 4 in X
 
     assert P[X == 0] == P[X == 4] == 1 / 16

@@ -1,6 +1,6 @@
 __all__ = ["MPBackend", "get_backend", "mp_configure"]
 
-from typing import Final, Tuple, Type, TypeVar
+from typing import Final, Tuple
 
 import mpmath
 from mpmath import ctx_base, libmp

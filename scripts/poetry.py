@@ -3,7 +3,7 @@ __all__ = ["reformat"]
 import subprocess
 import sys
 from pathlib import Path
-from typing import AnyStr, Union
+from typing import Union
 
 
 BASE_PATH = Path(__file__).resolve().parents[1]

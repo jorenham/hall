@@ -10,12 +10,13 @@ from typing import ClassVar, Final, Protocol, Union
 
 import mpmath
 
-from hall import Distribution, Interval
+from hall import DiscreteInterval as Interval
+from hall import Distribution
 from hall.typing import Float, Integral, Probability, Z, is_probability
 
 
 class DistributionD(Distribution[Z], Protocol[Z]):
-    discrete: ClassVar[bool] = True
+    __discrete__: ClassVar[bool] = True
 
     @abc.abstractmethod
     def pmf(self, x: Z) -> Probability:
@@ -29,7 +30,7 @@ class DistributionD(Distribution[Z], Protocol[Z]):
 
     def cmf_inv(self, y: Probability) -> Z:
         """Inverse of the cmf"""
-        support = self.support
+        support = self.__support__
         if not support.is_bounded:
             raise NotImplementedError
 
@@ -51,7 +52,7 @@ class DistributionD(Distribution[Z], Protocol[Z]):
         if not isinstance(x, numbers.Integral):
             raise TypeError("value must be an integral number")
 
-        if x not in self.support:
+        if x not in self.__support__:
             return mpmath.mpf(0)
 
         return self.pmf(x)
@@ -60,7 +61,7 @@ class DistributionD(Distribution[Z], Protocol[Z]):
         if not isinstance(x, numbers.Integral):
             raise TypeError("value must be an integral number")
 
-        support = self.support
+        support = self.__support__
         if x < support:
             return mpmath.mpf(0)
         if x > support:
@@ -92,8 +93,10 @@ class Binomial(DistributionD[Z]):
         self.n = n
         self.p = mpmath.mpf(p)
 
+        super().__init__()
+
     @property
-    def support(self) -> Interval[Z]:
+    def __support__(self) -> Interval[Z]:
         return Interval(type(self.n)(0), self.n)
 
     @property
@@ -109,17 +112,17 @@ class Binomial(DistributionD[Z]):
         return self.n * self.p * self.q
 
     def pmf(self, x: Integral) -> Probability:
-        if x < self.support:
-            raise TypeError(f"x must be larger than {self.support.a}")
-        if self.support < x:
+        if x < self.__support__:
+            raise TypeError(f"x must be larger than {self.__support__.a}")
+        if self.__support__ < x:
             return mpmath.mpf(0)
 
         return mpmath.binomial(self.n, x) * self.p ** x * self.q ** (self.n - x)
 
     def cmf(self, x: Integral) -> Probability:
-        if x < self.support:
-            raise TypeError(f"x must be larger than {self.support.a}")
-        if self.support < x:
+        if x < self.__support__:
+            raise TypeError(f"x must be larger than {self.__support__.a}")
+        if self.__support__ < x:
             return mpmath.mpf(1)
 
         return mpmath.betainc(self.n - x, x + 1, 0, self.q, regularized=True)
@@ -139,7 +142,7 @@ class Bernoulli(Binomial):
         return 1
 
 
-class Uniform(DistributionD[int]):
+class Uniform(DistributionD[Z]):
     __slots__ = ("a", "b")
 
     a: Final[int]
@@ -156,13 +159,15 @@ class Uniform(DistributionD[int]):
         self.a = int(a)
         self.b = int(b)
 
+        super().__init__()
+
+    @property
+    def __support__(self) -> Interval[Z]:
+        return Interval(self.a, self.b)
+
     @property
     def n(self) -> int:
         return self.b - self.a + 1
-
-    @property
-    def support(self) -> Interval[int]:
-        return Interval(self.a, self.b)
 
     @property
     def mean(self) -> Union[int, Float]:
@@ -177,7 +182,7 @@ class Uniform(DistributionD[int]):
 
     def pmf(self, x: Integral) -> Probability:
         # if x in self.x:
-        if x in self.support:
+        if x in self.__support__:
             return mpmath.fraction(1, self.n)
 
         return mpmath.mpf(0)

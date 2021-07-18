@@ -16,11 +16,11 @@ __all__ = [
     "is_probability",
 ]
 
-import decimal
-import fractions
 import numbers
 import sys
-from typing import Any, TypeVar, Union
+from decimal import Decimal
+from fractions import Fraction
+from typing import Any, SupportsFloat, SupportsInt, TypeVar, Union
 
 
 if sys.version_info >= (3, 10):
@@ -36,7 +36,7 @@ from mpmath import libmp
 # https://github.com/python/mypy/issues/3186
 Integral = Union[bool, int, libmp.MPZ_TYPE]
 Float = Union[float, mpmath.mpf]
-Real = Union[Integral, Float, decimal.Decimal, fractions.Fraction]
+Real = Union[Integral, Float, Decimal, Fraction]
 Complex = Union[Real, complex, mpmath.mpc]
 Probability = Float
 
@@ -52,8 +52,8 @@ R = TypeVar(
     "R",
     mpmath.mpf,
     float,
-    decimal.Decimal,
-    fractions.Fraction,
+    Decimal,
+    Fraction,
     mpmath.libmp.MPZ_TYPE,
     int,
 )
@@ -64,20 +64,27 @@ C = TypeVar(
     complex,
     mpmath.mpf,
     float,
-    decimal.Decimal,
-    fractions.Fraction,
+    Decimal,
+    Fraction,
     mpmath.libmp.MPZ_TYPE,
     int,
 )
 
 
 def is_integral(x: Any) -> bool:
-    return isinstance(x, (int, mpmath.libmp.MPZ_TYPE))
+    return (
+        isinstance(x, SupportsInt)
+        and isinstance(x, (int, mpmath.libmp.MPZ_TYPE))
+        or not getattr(x, "imag", 0)
+        and int(x) == x
+    )
 
 
 def is_real(x: Any, /, strict: bool = False) -> bool:
     return (
-        isinstance(x, (float, decimal.Decimal, fractions.Fraction, mpmath.mpf))
+        isinstance(x, SupportsFloat)
+        and isinstance(x, (float, Decimal, Fraction, mpmath.mpf))
+        and not getattr(x, "imag", 0)
         or not strict
         and is_integral(x)
     )

@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 import abc
-from typing import TYPE_CHECKING, Final, Generic, Optional, Protocol
+from typing import TYPE_CHECKING, Final, Generic, Optional
 
 import mpmath
 
@@ -78,7 +78,7 @@ class EventEq(Event[C], Generic[C]):
 
     @property
     def p(self) -> Probability:
-        if not self.X.distribution.discrete:
+        if not self.X.distribution.__discrete__:
             return mpmath.mpf(0)  # TODO return the smallest non-zero value
 
         p = self.X.distribution.f(self.x)
