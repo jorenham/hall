@@ -5,9 +5,9 @@ from typing import Any, Callable, Generic, Tuple, TypeVar, Union
 
 import mpmath
 
-from hall._core import Stochast
-from hall._types import C, Complex, Float, Probability
+from hall import Stochast
 from hall.event import Event, EventEq
+from hall.typing import C, Complex, Float, Probability
 
 
 _F = TypeVar("_F", bound=Callable[..., Complex])

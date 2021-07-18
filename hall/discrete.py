@@ -10,8 +10,8 @@ from typing import ClassVar, Final, Protocol, Union
 
 import mpmath
 
-from hall._core import Distribution, Interval
-from hall._types import Float, Integral, Probability, Z, is_probability
+from hall import Distribution, Interval
+from hall.typing import Float, Integral, Probability, Z, is_probability
 
 
 class DistributionD(Distribution[Z], Protocol[Z]):

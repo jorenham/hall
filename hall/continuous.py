@@ -10,7 +10,7 @@ from typing import ClassVar, Protocol, cast
 import mpmath
 
 from hall._core import Distribution, Interval
-from hall._types import Probability, R, Real
+from hall.typing import Probability, R, Real
 
 
 class DistributionC(Distribution[R], Protocol[R]):

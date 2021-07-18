@@ -1,4 +1,4 @@
-from ._core import Distribution, Stochast
+from ._core import Distribution, Interval, Stochast
 from .backend import *
 from .continuous import *
 from .discrete import *

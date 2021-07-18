@@ -26,11 +26,11 @@ See [documentation](https://jorenham.github.io/hall/) for more details.
 0.0227501319481792
 ```
 
-So the chance of having an IQ (normally distributed with μ=100 and σ=15) of at 
+So the chance of having an IQ (normally distributed with μ=100 and σ=15) of at
 least 130 is approximately 2.3%.
 <!--example-iq-end-->
 
-## A simple example: Monty ~~Python~~ Hall 
+## A simple example: Monty ~~Python~~ Hall
 
 `TODO`
 

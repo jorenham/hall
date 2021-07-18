@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING, Final, Generic, Optional, Protocol
 
 import mpmath
 
-from hall._types import C, Probability, is_probability
+from hall.typing import C, Probability, is_probability
 
 
 if TYPE_CHECKING:
@@ -49,7 +49,7 @@ class Event(Generic[C]):
         ...
 
 
-class EventEq(Event[C]):
+class EventEq(Event[C], Generic[C]):
     """
     Symbolic (in)equality expression of a stochast and a constant.
     """
@@ -92,7 +92,7 @@ class EventEq(Event[C]):
         return "!=" if self._inv else "="
 
 
-class EventInterval(Event[C]):
+class EventInterval(Event[C], Generic[C]):
     """
     Symbolic "greater/less than" expression of a stochast and a constant.
     """

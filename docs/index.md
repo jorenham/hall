@@ -22,17 +22,17 @@ If you have `pip` installed, you're good to go.
 
 ### Increase performance with [gmpy](https://github.com/aleaxit/gmpy) (optional)
 
-Optionally, the `gmpy2` dependency can be installed to significantly speed up 
-the multi-precision arithmatical calculations. This adds bindings to the 
-[`GMP`](http://gmplib.org/) ([`MPIR`](http://www.mpir.org/) on Windows), 
-[`MPFR`](http://www.mpfr.org/), and [`MPC`](http://mpc.multiprecision.org/) 
+Optionally, the `gmpy2` dependency can be installed to significantly speed up
+the multi-precision arithmatical calculations. This adds bindings to the
+[`GMP`](http://gmplib.org/) ([`MPIR`](http://www.mpir.org/) on Windows),
+[`MPFR`](http://www.mpfr.org/), and [`MPC`](http://mpc.multiprecision.org/)
 libraries. On Ubuntu-based systems, these are installed with:
 
 ```bash
 apt install libgmp-dev libmpfr-dev libmpc-dev
 ```
 
-Now you can install the `gmpy2` dependency with: 
+Now you can install the `gmpy2` dependency with:
 
 ```bash
 pip install hall[gmpy2]
@@ -49,7 +49,7 @@ To verify that `gmpy` is installed, check the backend:
 
 # Examples
 
-### Intelligence Quotient (IQ) 
+### Intelligence Quotient (IQ)
 
 {%
    include-markdown "../README.md"
@@ -60,7 +60,7 @@ To verify that `gmpy` is installed, check the backend:
 
 # Contributing
 
-Any contributions to *hall* are appreciated! 
+Any contributions to *hall* are appreciated!
 
 ## Issues
 
@@ -78,4 +78,10 @@ Ensure you have [poetry](https://python-poetry.org/docs/#installation) installed
 poetry install
 ```
 
-After making your changes, run `poetry `
+Additionally, install [`pre-commit`](https://pre-commit.com/#install), then run:
+
+```bash
+pre-commit install
+```
+
+This adds git hooks that automatically formats and checks the code before commiting.

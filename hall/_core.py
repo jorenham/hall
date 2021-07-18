@@ -18,8 +18,8 @@ from typing import (
 
 import mpmath
 
-from hall._types import C, Float, Probability
 from hall.event import Event, EventEq, EventInterval
+from hall.typing import C, Float, Probability
 
 
 class Stochast(Generic[C]):
