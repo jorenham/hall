@@ -11,8 +11,9 @@ from typing import ClassVar, Protocol, cast
 import mpmath
 
 from hall._core import Distribution as _Distribution
+from hall._core import Interval
 from hall._types import Float as Probability
-from hall._types import Interval, R, Real
+from hall._types import R, Real
 
 
 class Distribution(_Distribution[R], Protocol[R]):

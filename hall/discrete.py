@@ -14,9 +14,10 @@ from typing import ClassVar, Final, Protocol, Union
 import mpmath
 
 from hall._core import Distribution as _Distribution
+from hall._core import Interval
 from hall._types import Float
 from hall._types import Float as Probability
-from hall._types import Integral, Interval, Z, is_probability
+from hall._types import Integral, Z, is_probability
 
 
 class Distribution(_Distribution[Z], Protocol[Z]):
