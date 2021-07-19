@@ -4,8 +4,7 @@ __all__ = [
 
 import abc
 import numbers
-import statistics
-from typing import ClassVar, Protocol, cast
+from typing import ClassVar, Protocol
 
 import mpmath
 
@@ -95,9 +94,8 @@ class Normal(DistributionC[mpmath.mpf]):
     def pdf(self, x: Real) -> Probability:
         return mpmath.npdf(x, self.mu, self.sigma)
 
-    def cdf(self, x) -> Probability:
+    def cdf(self, x: Real) -> Probability:
         return mpmath.mp.ncdf(x, self.mu, self.sigma)
 
-    def cdf_inv(self, y: Probability) -> R:
-        x = statistics._normal_dist_inv_cdf(y, self.mu, self.sigma)  # type: ignore  # noqa
-        return cast(R, mpmath.mpf(x))
+    def cdf_inv(self, y: Probability) -> Real:
+        return self.mu + self.sigma * mpmath.sqrt(2) * mpmath.erfinv(2 * y - 1)

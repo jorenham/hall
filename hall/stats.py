@@ -1,4 +1,4 @@
-__all__ = ["P", "E", "Var", "Std", "Cov", "Corr"]
+__all__ = ["P", "E", "Var", "Std", "Cov", "Corr", "sample"]
 
 import functools
 from typing import Any, Callable, Generic, Tuple, TypeVar, Union
@@ -94,3 +94,7 @@ def Corr(X: Stochast[C], Y: Stochast[C]) -> Float:
         return mpmath.mpf(1)
 
     return Cov(X, Y) / mpmath.fmul(Std(X), Std(Y))
+
+
+def sample(X: Stochast[C]) -> C:
+    return X.distribution.G(mpmath.rand())

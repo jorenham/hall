@@ -16,14 +16,16 @@ See [documentation](https://jorenham.github.io/hall/) for more details.
 
 <!--example-iq-start-->
 ```pycon
->>> from hall import P, E, Std, Normal
+>>> from hall import P, E, Std, Normal, sample
 >>> IQ = ~Normal(100, 15)
 >>> E[IQ]
 100.0
 >>> Std[IQ]
 15.0
->>> P(X >= 130)
+>>> P(IQ >= 130)
 0.0227501319481792
+>>> print("IQ test outcome:", sample(IQ))
+IQ test outcome: 116.309834872963
 ```
 
 So the chance of having an IQ (normally distributed with μ=100 and σ=15) of at
