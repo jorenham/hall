@@ -105,14 +105,14 @@
 <a href="https://mpmath.org/doc/current/setup.html#download-and-installation"><code>mpmath</code></a>.
 If you have <code>pip</code> installed, you're good to go.</p>
 <h3 id="increase-performance-with-gmpy-optional">Increase performance with <a href="https://github.com/aleaxit/gmpy">gmpy</a> (optional)</h3>
-<p>Optionally, the <code>gmpy2</code> dependency can be installed to significantly speed up 
-the multi-precision arithmatical calculations. This adds bindings to the 
-<a href="http://gmplib.org/"><code>GMP</code></a> (<a href="http://www.mpir.org/"><code>MPIR</code></a> on Windows), 
-<a href="http://www.mpfr.org/"><code>MPFR</code></a>, and <a href="http://mpc.multiprecision.org/"><code>MPC</code></a> 
+<p>Optionally, the <code>gmpy2</code> dependency can be installed to significantly speed up
+the multi-precision arithmatical calculations. This adds bindings to the
+<a href="http://gmplib.org/"><code>GMP</code></a> (<a href="http://www.mpir.org/"><code>MPIR</code></a> on Windows),
+<a href="http://www.mpfr.org/"><code>MPFR</code></a>, and <a href="http://mpc.multiprecision.org/"><code>MPC</code></a>
 libraries. On Ubuntu-based systems, these are installed with:</p>
 <pre><code class="language-bash">apt install libgmp-dev libmpfr-dev libmpc-dev
 </code></pre>
-<p>Now you can install the <code>gmpy2</code> dependency with: </p>
+<p>Now you can install the <code>gmpy2</code> dependency with:</p>
 <pre><code class="language-bash">pip install hall[gmpy2]
 </code></pre>
 <p>To verify that <code>gmpy</code> is installed, check the backend:</p>
@@ -124,21 +124,23 @@ libraries. On Ubuntu-based systems, these are installed with:</p>
 <h3 id="intelligence-quotient-iq">Intelligence Quotient (IQ)</h3>
 <!-- BEGIN INCLUDE ../README.md &lt;!--example-iq-start--&gt; &lt;!--example-iq-end--&gt; -->
 
-<pre><code class="language-pycon">&gt;&gt;&gt; from hall import P, E, Std, Normal
+<pre><code class="language-pycon">&gt;&gt;&gt; from hall import P, E, Std, Normal, sample
 &gt;&gt;&gt; IQ = ~Normal(100, 15)
 &gt;&gt;&gt; E[IQ]
 100.0
 &gt;&gt;&gt; Std[IQ]
 15.0
-&gt;&gt;&gt; P(X &gt;= 130)
+&gt;&gt;&gt; P(IQ &gt;= 130)
 0.0227501319481792
+&gt;&gt;&gt; print(&quot;IQ test outcome:&quot;, sample(IQ))
+IQ test outcome: 116.309834872963
 </code></pre>
-<p>So the chance of having an IQ (normally distributed with μ=100 and σ=15) of at 
+<p>So the chance of having an IQ (normally distributed with μ=100 and σ=15) of at
 least 130 is approximately 2.3%.</p>
 <!-- END INCLUDE -->
 
 <h1 id="contributing">Contributing</h1>
-<p>Any contributions to <em>hall</em> are appreciated! </p>
+<p>Any contributions to <em>hall</em> are appreciated!</p>
 <h2 id="issues">Issues</h2>
 <p>Questions, feature requests and bug reports are all welcome as issues.</p>
 <p>When reporting a bug, make sure to include the versions of <code>hall</code> and <code>mpmath</code>
@@ -148,7 +150,10 @@ provide a <strong>reproducable</strong> example of the bug.</p>
 <p>Ensure you have <a href="https://python-poetry.org/docs/#installation">poetry</a> installed, then</p>
 <pre><code class="language-bash">poetry install
 </code></pre>
-<p>After making your changes, run <code>poetry</code></p></div>
+<p>Additionally, install <a href="https://pre-commit.com/#install"><code>pre-commit</code></a>, then run:</p>
+<pre><code class="language-bash">pre-commit install
+</code></pre>
+<p>This adds git hooks that automatically formats and checks the code before commiting.</p></div>
             </div>
         </div>
 
@@ -208,5 +213,5 @@ provide a <strong>reproducable</strong> example of the bug.</p>
 
 <!--
 MkDocs version : 1.2.1
-Build Date UTC : 2021-07-17 23:53:32.414244+00:00
+Build Date UTC : 2021-07-19 00:20:31.719957+00:00
 -->
