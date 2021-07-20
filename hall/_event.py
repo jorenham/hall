@@ -12,17 +12,17 @@ from typing import TYPE_CHECKING, Final, Generic, Optional
 
 import mpmath
 
-from hall.typing import C, Probability, is_probability
+from hall.numbers import FloatType, Number, Probability, is_probability
 
 
 if TYPE_CHECKING:
-    from hall._core import Stochast
+    from hall._core import RandomVar
 
 
-class Event(Generic[C]):
+class Event(Generic[Number]):
     __slots__ = ()
 
-    X: Stochast[C]
+    X: RandomVar[Number]
 
     def __float__(self) -> float:
         """return the probability of the event occurring"""
@@ -35,7 +35,7 @@ class Event(Generic[C]):
     def __int__(self) -> int:
         return int(bool(self))
 
-    def __or__(self, Y: Event[C]) -> Event[C]:
+    def __or__(self, Y: Event[Number]) -> Event[Number]:
         """Conditional event"""
         if isinstance(Y, Event):
             return self
@@ -49,18 +49,18 @@ class Event(Generic[C]):
         ...
 
 
-class EventEq(Event[C], Generic[C]):
+class EventEq(Event[Number], Generic[Number]):
     """
     Symbolic (in)equality expression of a stochast and a constant.
     """
 
     __slots__ = ("X", "x", "_inv")  # noqa
 
-    X: Stochast[C]
-    x: C
+    X: RandomVar[Number]
+    x: Number
     _inv: Final[bool]
 
-    def __init__(self, X: Stochast[C], x: C, _inv: bool = False):
+    def __init__(self, X: RandomVar[Number], x: Number, _inv: bool = False):
         self.X = X
         self.x = x
         self._inv = _inv
@@ -70,7 +70,7 @@ class EventEq(Event[C], Generic[C]):
 
     __str__ = __repr__
 
-    def __invert__(self) -> EventEq[C]:
+    def __invert__(self) -> EventEq[Number]:
         return type(self)(self.X, self.x, not self._inv)
 
     def __hash__(self):
@@ -78,12 +78,12 @@ class EventEq(Event[C], Generic[C]):
 
     @property
     def p(self) -> Probability:
-        if not self.X.distribution.__discrete__:
-            return mpmath.mpf(0)  # TODO return the smallest non-zero value
+        if not self.X.__discrete__:
+            return FloatType(0)  # TODO return the smallest non-zero value
 
-        p = self.X.distribution.f(self.x)
+        p = self.X.f(self.x)
         if self._inv:
-            return 1.0 - p
+            return FloatType(1) - p
         else:
             return p
 
@@ -92,23 +92,23 @@ class EventEq(Event[C], Generic[C]):
         return "!=" if self._inv else "="
 
 
-class EventInterval(Event[C], Generic[C]):
+class EventInterval(Event[Number], Generic[Number]):
     """
     Symbolic "greater/less than" expression of a stochast and a constant.
     """
 
     __slots__ = ("X", "a", "b", "_inv")  # noqa
 
-    X: Stochast[C]
-    a: Optional[C]
-    b: Optional[C]
+    X: RandomVar[Number]
+    a: Optional[Number]
+    b: Optional[Number]
     _inv: Final[bool]
 
     def __init__(
         self,
-        X: Stochast[C],
-        a: Optional[C] = None,
-        b: Optional[C] = None,
+        X: RandomVar[Number],
+        a: Optional[Number] = None,
+        b: Optional[Number] = None,
         _inv: bool = False,
     ):
         if a is None and b is None:
@@ -149,15 +149,15 @@ class EventInterval(Event[C], Generic[C]):
     def p(self) -> Probability:
         p: Probability
         if self.b is None:
-            p = mpmath.mpf(1)
+            p = FloatType(1)
         else:
-            p = self.X.distribution.F(self.b)
+            p = self.X.F(self.b)
 
         if self.a is not None:
-            p -= self.X.distribution.F(self.a)
+            p -= self.X.F(self.a)
 
         if self._inv:
-            p = mpmath.mpf(1) - p
+            p = FloatType(1) - p
 
         assert is_probability(p), f"{p!r} is not a probability"
 

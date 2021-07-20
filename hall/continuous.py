@@ -3,37 +3,43 @@ __all__ = [
 ]
 
 import abc
-import numbers
 from typing import ClassVar, Protocol
 
 import mpmath
 
 from hall import Interval
 from hall._core import Distribution
-from hall.typing import Probability, R, Real
+from hall.numbers import (
+    AnyFloat,
+    FloatType,
+    Probability,
+    clean_number,
+    is_float,
+    is_int,
+)
 
 
-class DistributionC(Distribution[R], Protocol[R]):
+class DistributionC(Distribution[FloatType], Protocol):
     __discrete__: ClassVar[bool] = False
 
     @abc.abstractmethod
-    def pdf(self, x: R) -> Probability:
+    def pdf(self, x: FloatType) -> Probability:
         """Probability Density Function"""
         raise NotImplementedError
 
     @abc.abstractmethod
-    def cdf(self, x: R) -> Probability:
+    def cdf(self, x: FloatType) -> Probability:
         """Cumulative Density/Distribution Function"""
         raise NotImplementedError
 
-    def cdf_inv(self, y: Probability) -> R:
+    def cdf_inv(self, y: Probability) -> FloatType:
         """Inverse of the cdf"""
         # TODO
         #  https://mpmath.org/doc/current/calculus/optimization.html#mpmath.calculus.optimization.Ridder
         raise NotImplementedError
 
-    def f(self, x: R) -> Probability:
-        if not isinstance(x, numbers.Real):
+    def f(self, x: FloatType) -> Probability:
+        if not is_float(x) and not is_int(x):
             raise TypeError("value must be an real number")
 
         if x not in self.__support__:
@@ -41,8 +47,8 @@ class DistributionC(Distribution[R], Protocol[R]):
 
         return self.pdf(x)
 
-    def F(self, x: R) -> Probability:
-        if not isinstance(x, numbers.Real):
+    def F(self, x: FloatType) -> Probability:
+        if not is_float(x) and not is_int(x):
             raise TypeError("value must be an real number")
 
         support = self.__support__
@@ -53,14 +59,14 @@ class DistributionC(Distribution[R], Protocol[R]):
 
         return self.cdf(x)
 
-    def G(self, y: Probability) -> R:
+    def G(self, y: Probability) -> FloatType:
         if not (0 <= y <= 1):
             raise TypeError("probability must be between 0 and 1 inclusively")
 
         return self.cdf_inv(y)
 
 
-class Normal(DistributionC[mpmath.mpf]):
+class Normal(DistributionC):
     __slots__ = ("mu", "sigma")
 
     mu: mpmath.mpf
@@ -68,14 +74,14 @@ class Normal(DistributionC[mpmath.mpf]):
 
     def __init__(
         self,
-        mu: Real = mpmath.mpf(0),
-        sigma: Real = mpmath.mpf(1),
+        mu: AnyFloat = mpmath.mpf(0),
+        sigma: AnyFloat = mpmath.mpf(1),
     ):
         if sigma < 0:
             raise ValueError("sigma must be positive")
 
-        self.mu = mpmath.mpf(mu)
-        self.sigma = mpmath.mpf(sigma)
+        self.mu = clean_number(mu)
+        self.sigma = clean_number(sigma)
 
         super().__init__()
 
@@ -91,11 +97,11 @@ class Normal(DistributionC[mpmath.mpf]):
     def variance(self):
         return self.sigma * self.sigma
 
-    def pdf(self, x: Real) -> Probability:
+    def pdf(self, x: AnyFloat) -> Probability:
         return mpmath.npdf(x, self.mu, self.sigma)
 
-    def cdf(self, x: Real) -> Probability:
+    def cdf(self, x: AnyFloat) -> Probability:
         return mpmath.mp.ncdf(x, self.mu, self.sigma)
 
-    def cdf_inv(self, y: Probability) -> Real:
+    def cdf_inv(self, y: Probability) -> FloatType:
         return self.mu + self.sigma * mpmath.sqrt(2) * mpmath.erfinv(2 * y - 1)

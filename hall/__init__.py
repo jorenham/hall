@@ -1,4 +1,4 @@
-from ._core import Distribution, Stochast
+from ._core import Distribution, RandomVar
 from .analysis import *
 from .backend import *
 from .continuous import *
