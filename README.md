@@ -17,7 +17,7 @@ See [documentation](https://jorenham.github.io/hall/) for more details.
 <!--example-iq-start-->
 ```pycon
 >>> from hall import P, E, Std, Normal, sample
->>> IQ = ~Normal(100, 15)
+>>> IQ = ~Normal() * 100 + 15
 >>> E[IQ]
 100.0
 >>> Std[IQ]

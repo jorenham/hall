@@ -6,5 +6,49 @@ site_url: https://jorenham.github.io/hall
 repo_name: jorenham/hall
 repo_url: https://github.com/jorenham/hall
 
+nav:
+  - Overview: index.md
+  - Install: install.md
+  - Roadmap: roadmap.md
+  - Contributing to Hall: contributing.md
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: bbb cyan
+    accent: bbb red
+  font:
+    text: Lato
+    code: Roboto Mono
+  analytics:
+    provider: google
+    property: G-3C61KQY4QN
+
+copyright: "&copy; 2021 Joren Hammudoglu - All Rights Reserved"
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/jorenham
+
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/channel/UCd5D1ha_DhUvSSOPGBhSo7g
+
 plugins:
   - include-markdown
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_css:
+  - stylesheets/theme.css
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

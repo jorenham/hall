@@ -6,50 +6,22 @@
    end="<!--badges-end-->"
 %}
 
-`TODO`
-
-# Install
-
-Installation is as simple as:
-
-```bash
-pip install hall
-```
-
-*Hall* has no required dependencies except python 3.8, 3.9 or 3.10, and
-[`mpmath`](https://mpmath.org/doc/current/setup.html#download-and-installation).
-If you have `pip` installed, you're good to go.
-
-### Increase performance with [gmpy](https://github.com/aleaxit/gmpy) (optional)
-
-Optionally, the `gmpy2` dependency can be installed to significantly speed up
-the multi-precision arithmatical calculations. This adds bindings to the
-[`GMP`](http://gmplib.org/) ([`MPIR`](http://www.mpir.org/) on Windows),
-[`MPFR`](http://www.mpfr.org/), and [`MPC`](http://mpc.multiprecision.org/)
-libraries. On Ubuntu-based systems, these are installed with:
-
-```bash
-apt install libgmp-dev libmpfr-dev libmpc-dev
-```
-
-Now you can install the `gmpy2` dependency with:
-
-```bash
-pip install hall[gmpy2]
-```
-
-To verify that `gmpy` is installed, check the backend:
-
-```pycon
->>> from hall.backend import get_backend
->>> get_backend()
-'gmpy'
-```
+!!! note warning "Caution: under development"
+    **Hall** is currently under development and is prone to interface changes.
+    The documentation is currently incomplete, but will be coming soon.
 
 
-# Examples
+Hall is a lightweight library with pythonic syntax. Some features include:
 
-### Intelligence Quotient (IQ)
+ - Clean, pythonic syntax that closely resembles mathematical notation in probability theory.
+ - Symbolic algebra and bayesian statistics with random variables.
+ - Calculations are numerically precise, with arbitrairy precision.
+ - Lightweight; it only requires [mpmath](https://mpmath.org/).
+ - Fully type-annotated and mypy friendly 
+ - Thoroughly tested. 
+
+
+## Example
 
 {%
    include-markdown "../README.md"
@@ -58,30 +30,14 @@ To verify that `gmpy` is installed, check the backend:
 %}
 
 
-# Contributing
+What's going on here:
 
-Any contributions to *hall* are appreciated!
+ - `IQ` is a random variable with the normal distribution, scaled to have a mean of 100 and standard deviation of 15, i.e., \( \mathrm{IQ} \sim \mathcal N(100, 15^2) \).
+ - We verify this using the operators for the expectancy \( \operatorname E[\cdot] \), and standard deviation \( \operatorname{Std}[\cdot] \).
+ - Next, we obtain the probability of someone having an IQ of at least 130, \( \operatorname P (\mathrm{IQ} \ge 130) \).
+ - Finally, we draw a sample from the random variable with the `hall.sample` function.
 
-## Issues
 
-Questions, feature requests and bug reports are all welcome as issues.
+## Rationale
 
-When reporting a bug, make sure to include the versions of `hall` and `mpmath`
-you are using, as well as the backend (`hall.backend.get_backend()`), and
-provide a **reproducable** example of the bug.
-
-## Development
-
-Ensure you have [poetry](https://python-poetry.org/docs/#installation) installed, then
-
-```bash
-poetry install
-```
-
-Additionally, install [`pre-commit`](https://pre-commit.com/#install), then run:
-
-```bash
-pre-commit install
-```
-
-This adds git hooks that automatically formats and checks the code before commiting.
+!!! note info "Coming soon"
