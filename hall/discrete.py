@@ -22,7 +22,7 @@ from hall.numbers import (
 
 
 class DistributionD(Distribution[IntType], Protocol):
-    __discrete__: ClassVar[bool] = True
+    __discrete__: ClassVar[bool] = True  # noqa
 
     @abc.abstractmethod
     def pmf(self, x: IntType) -> Probability:

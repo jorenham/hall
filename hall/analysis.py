@@ -4,11 +4,8 @@ from __future__ import annotations
 __all__ = ["Function", "Interval", "DiscreteInterval", "supp", "convolve"]
 
 import abc
-import numbers
 from typing import (
-    Any,
     Callable,
-    ClassVar,
     Generic,
     List,
     Optional,
@@ -22,7 +19,6 @@ from typing import (
 import mpmath
 
 from hall.numbers import (
-    AnyComplex,
     AnyNumber,
     CleanNumber,
     ComplexType,
@@ -290,7 +286,10 @@ _N_co = TypeVar("_N_co", bound=CleanNumber, covariant=True)
 class Function(Protocol[Number, _N_co]):
     __slots__ = ()
 
-    __discrete__: ClassVar[bool]
+    @property
+    @abc.abstractmethod
+    def __discrete__(self) -> bool:
+        ...
 
     @property
     @abc.abstractmethod
@@ -305,7 +304,6 @@ class Function(Protocol[Number, _N_co]):
 class _FunctionAlias(Function[Number, _N_co], Generic[Number, _N_co]):
     __slots__ = ("__wrapped__", "__support")  # noqa
 
-    __discrete__: ClassVar[bool] = False
     __support: Interval[Number]
 
     def __init__(
@@ -313,6 +311,10 @@ class _FunctionAlias(Function[Number, _N_co], Generic[Number, _N_co]):
     ):
         self.__wrapped__: Callable[[Number], _N_co] = fn
         self.__support = support
+
+    @property
+    def __discrete__(self):
+        return False
 
     @property
     def __support__(self) -> Interval[Number]:

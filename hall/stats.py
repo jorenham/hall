@@ -5,7 +5,7 @@ from typing import Any, Callable, Generic, Tuple, TypeVar, Union
 
 import mpmath
 
-from hall import RandomVar
+from hall._core import BaseRandomVar  # noqa
 from hall._event import Event, EventEq
 from hall.numbers import CleanNumber, FloatType, Number, Probability
 
@@ -30,13 +30,13 @@ class Operator(Generic[_F]):
 
 
 @Operator
-def P(event: Union[Event[Number], RandomVar[Number]]) -> Probability:
+def P(event: Union[Event[Number], BaseRandomVar[Number]]) -> Probability:
     """
     Probability measure for the given event, i.e. the probability that the
     event occurs:
     https://en.wikipedia.org/wiki/Probability
     """
-    if isinstance(event, RandomVar):
+    if isinstance(event, BaseRandomVar):
         # P[X] -> P[X != 0]
         event = EventEq(event, 0, _inv=True)
 
@@ -44,7 +44,7 @@ def P(event: Union[Event[Number], RandomVar[Number]]) -> Probability:
 
 
 @Operator
-def E(X: RandomVar[Number]) -> Union[Number, FloatType]:
+def E(X: BaseRandomVar[Number]) -> Union[Number, FloatType]:
     """
     Expected value: https://en.wikipedia.org/wiki/Expected_value
     """
@@ -52,7 +52,7 @@ def E(X: RandomVar[Number]) -> Union[Number, FloatType]:
 
 
 @Operator
-def Var(X: RandomVar[Number]) -> Union[Number, FloatType]:
+def Var(X: BaseRandomVar[Number]) -> Union[Number, FloatType]:
     """
     Variance:
     https://en.wikipedia.org/wiki/Variance
@@ -61,7 +61,7 @@ def Var(X: RandomVar[Number]) -> Union[Number, FloatType]:
 
 
 @Operator
-def Std(X: RandomVar[Number]) -> Union[Number, FloatType]:
+def Std(X: BaseRandomVar[Number]) -> Union[Number, FloatType]:
     """
     Standard deviation:
     https://en.wikipedia.org/wiki/Standard_deviation
@@ -70,7 +70,10 @@ def Std(X: RandomVar[Number]) -> Union[Number, FloatType]:
 
 
 @Operator
-def Cov(X: RandomVar[Number], Y: RandomVar[Number]) -> Union[Number, FloatType]:
+def Cov(
+    X: BaseRandomVar[Number],
+    Y: BaseRandomVar[Number],
+) -> Union[Number, FloatType]:
     """
     Covariance:
     https://en.wikipedia.org/wiki/Covariance
@@ -86,7 +89,7 @@ def Cov(X: RandomVar[Number], Y: RandomVar[Number]) -> Union[Number, FloatType]:
 
 @Operator
 def Corr(
-    X: RandomVar[Number], Y: RandomVar[Number]
+    X: BaseRandomVar[Number], Y: BaseRandomVar[Number]
 ) -> Union[Number, FloatType]:
     """
     Pearson correlation coefficient:
@@ -98,5 +101,5 @@ def Corr(
     return Cov(X, Y) / mpmath.fmul(Std(X), Std(Y))
 
 
-def sample(X: RandomVar[Number]) -> Number:
+def sample(X: BaseRandomVar[Number]) -> Number:
     return X.G(mpmath.rand())

@@ -8,21 +8,35 @@ __all__ = [
 ]
 
 import abc
-from typing import TYPE_CHECKING, Final, Generic, Optional
+from typing import (
+    TYPE_CHECKING,
+    Final,
+    Generic,
+    Optional,
+    Protocol,
+    runtime_checkable,
+)
 
 import mpmath
 
-from hall.numbers import FloatType, Number, Probability, is_probability
+from hall.numbers import (
+    CleanNumber,
+    FloatType,
+    Number,
+    Probability,
+    is_probability,
+)
 
 
 if TYPE_CHECKING:
-    from hall._core import RandomVar
+    from hall._core import BaseRandomVar  # noqa
 
 
-class Event(Generic[Number]):
+@runtime_checkable
+class Event(Protocol[Number]):
     __slots__ = ()
 
-    X: RandomVar[Number]
+    X: BaseRandomVar[Number]
 
     def __float__(self) -> float:
         """return the probability of the event occurring"""
@@ -56,11 +70,13 @@ class EventEq(Event[Number], Generic[Number]):
 
     __slots__ = ("X", "x", "_inv")  # noqa
 
-    X: RandomVar[Number]
-    x: Number
+    X: BaseRandomVar[Number]
+    x: CleanNumber
     _inv: Final[bool]
 
-    def __init__(self, X: RandomVar[Number], x: Number, _inv: bool = False):
+    def __init__(
+        self, X: BaseRandomVar[Number], x: CleanNumber, _inv: bool = False
+    ):
         self.X = X
         self.x = x
         self._inv = _inv
@@ -99,16 +115,16 @@ class EventInterval(Event[Number], Generic[Number]):
 
     __slots__ = ("X", "a", "b", "_inv")  # noqa
 
-    X: RandomVar[Number]
-    a: Optional[Number]
-    b: Optional[Number]
+    X: BaseRandomVar[Number]
+    a: Optional[CleanNumber]
+    b: Optional[CleanNumber]
     _inv: Final[bool]
 
     def __init__(
         self,
-        X: RandomVar[Number],
-        a: Optional[Number] = None,
-        b: Optional[Number] = None,
+        X: BaseRandomVar[Number],
+        a: Optional[CleanNumber] = None,
+        b: Optional[CleanNumber] = None,
         _inv: bool = False,
     ):
         if a is None and b is None:

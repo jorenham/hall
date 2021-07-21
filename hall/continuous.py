@@ -20,7 +20,7 @@ from hall.numbers import (
 
 
 class DistributionC(Distribution[FloatType], Protocol):
-    __discrete__: ClassVar[bool] = False
+    __discrete__: ClassVar[bool] = False  # noqa
 
     @abc.abstractmethod
     def pdf(self, x: FloatType) -> Probability:
