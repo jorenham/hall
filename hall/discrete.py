@@ -12,6 +12,7 @@ import mpmath
 from hall import DiscreteInterval as Interval
 from hall import Distribution
 from hall.numbers import (
+    AnyInt,
     FloatType,
     IntType,
     Probability,
@@ -68,9 +69,9 @@ class DistributionD(Distribution[IntType], Protocol):
             raise TypeError("value must be an integral number")
 
         support = self.__support__
-        if x < support:
+        if x < support.a:
             return mpmath.mpf(0)
-        if x > support:
+        if x > support.b:
             return mpmath.mpf(1)
 
         return self.cmf(x)
@@ -118,18 +119,14 @@ class Binomial(DistributionD):
         return self.n * self.p * self.q
 
     def pmf(self, x: IntType) -> Probability:
-        if x < self.__support__:
-            raise TypeError(f"x must be larger than {self.__support__.a}")
-        if self.__support__ < x:
-            return FloatType(0)
+        if x < self.__support__.a:
+            raise TypeError(f"x={x} must be larger than {self.__support__.a}")
 
         return mpmath.binomial(self.n, x) * self.p ** x * self.q ** (self.n - x)
 
     def cmf(self, x: IntType) -> Probability:
-        if x < self.__support__:
+        if x < self.__support__.a:
             raise TypeError(f"x must be larger than {self.__support__.a}")
-        if self.__support__ < x:
-            return FloatType(1)
 
         return mpmath.betainc(self.n - x, x + 1, 0, self.q, regularized=True)
 
@@ -151,10 +148,10 @@ class Bernoulli(Binomial):
 class Uniform(DistributionD):
     __slots__ = ("a", "b")
 
-    a: Final[int]
-    b: Final[int]
+    a: Final[IntType]
+    b: Final[IntType]
 
-    def __init__(self, a: IntType, b: IntType):
+    def __init__(self, a: AnyInt, b: AnyInt):
         if not is_int(a):
             raise TypeError("a must be an integral number")
         if not is_int(b):
@@ -162,8 +159,8 @@ class Uniform(DistributionD):
         if b <= a:
             raise ValueError("a must be strictly less then b")
 
-        self.a = int(a)
-        self.b = int(b)
+        self.a = IntType(a)
+        self.b = IntType(b)
 
         super().__init__()
 
@@ -177,14 +174,14 @@ class Uniform(DistributionD):
 
     @property
     def mean(self) -> Union[IntType, FloatType]:
-        if self.n % 2 == 0:
+        if self.n % 2 == 1:
             return (self.a + self.b) // 2
         else:
-            return mpmath.fraction(self.a + self.b, 2)
+            return (self.a + self.b) / 2
 
     @property
     def variance(self) -> FloatType:
-        return mpmath.fraction(self.n ** 2 - 1, 12)
+        return (self.n ** 2 - 1) / 12
 
     def pmf(self, x: IntType) -> Probability:
         # if x in self.x:
