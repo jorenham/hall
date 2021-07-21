@@ -61,6 +61,7 @@ black = "^21.6b0"
 isort = "^5.9"
 mkdocs = "^1.2"
 mkdocs-include-markdown-plugin = "^3.2"
+hypothesis = {extras = ["codemods"], version = "^6.14"}
 
 [tool.poetry.scripts]
 reformat = "scripts.poetry:reformat"
